@@ -19,37 +19,18 @@
         "address_resolver": "cloudflare",
         "strategy": "prefer_ipv4"
       }
-    ],
-    "rules": [
-      {
-        "outbound": "any",
-        "server": "Cloudflare"
-      }
-    ],
-    "final": "Remote-DNS"
-  },
-  "ntp": {
-    "enabled": true,
-    "server": "ir.pool.ntp.org",
-    "server_port": 123,
-    "detour": "direct"
+    ]
   },
   "inbounds": [
     {
       "type": "tun",
+      "tag": "tun-in",
       "address": [
         "172.19.0.1/30",
         "fdfe:dcba:9876::1/126"
       ],
       "auto_route": true,
       "stack": "mixed",
-      "platform": {
-        "http_proxy": {
-          "enabled": false,
-          "server": "127.0.0.1",
-          "server_port": 20219
-        }
-      },
       "sniff": true,
       "sniff_override_destination": true,
       "domain_strategy": "ipv4_only",
@@ -61,13 +42,6 @@
       "listen": "127.0.0.1",
       "listen_port": 20220,
       "udp_fragment": false
-    },
-    {
-      "type": "http",
-      "tag": "http-in",
-      "listen": "127.0.0.1",
-      "listen_port": 20221,
-      "udp_fragment": false
     }
   ],
   "outbounds": [
@@ -77,7 +51,6 @@
       "server": "208.103.161.33",
       "server_port": 2053,
       "uuid": "1a25f8ad-cad2-4e93-b5bf-34e42bcac02a",
-      "encryption": "none",
       "tls": {
         "enabled": true,
         "server_name": "sni.111000.dynv6.net",
@@ -91,14 +64,6 @@
         "type": "ws",
         "path": "/"
       }
-    },
-    {
-      "type": "urltest",
-      "tag": "auto",
-      "url": "http://cp.cloudflare.com",
-      "interval": "10m0s",
-      "tolerance": 1,
-      "idle_timeout": "30m0s"
     }
   ],
   "route": {
@@ -112,13 +77,5 @@
         "action": "direct"
       }
     ]
-  },
-  "experimental": {
-    "cache_file": {
-      "enabled": true,
-      "path": "cache.db",
-      "cache_id": "sinavm",
-      "store_fakeip": true
-    }
   }
 }

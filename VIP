@@ -1,6 +1,15 @@
+# Copyright (c) 2025 Leviko_pubg
+# All rights reserved.  
+# This configuration file is for personal use only. Redistribution, modification, or commercial use is prohibited without explicit permission  
+
+#subscription-userinfo: upload=0; download=0; total=0; expire=1768595399
+#profile-update-interval: 6  
+#support-url: https://t.me/napsternet2
+#profile-web-page-url: https://t.me/napsternet2
+
 {
   "log": {
-    "level": "warning"
+    "level": "panic"
   },
   "dns": {
     "servers": [
@@ -10,17 +19,55 @@
         "address_resolver": "cloudflare",
         "strategy": "prefer_ipv4"
       }
-    ]
+    ],
+    "rules": [
+      {
+        "outbound": "any",
+        "server": "Cloudflare"
+      }
+    ],
+    "final": "Remote-DNS"
+  },
+  "ntp": {
+    "enabled": true,
+    "server": "ir.pool.ntp.org",
+    "server_port": 123,
+    "detour": "direct"
   },
   "inbounds": [
     {
       "type": "tun",
-      "tag": "tun-in",
-      "address": ["172.19.0.1/30"],
+      "address": [
+        "172.19.0.1/30",
+        "fdfe:dcba:9876::1/126"
+      ],
       "auto_route": true,
       "stack": "mixed",
+      "platform": {
+        "http_proxy": {
+          "enabled": false,
+          "server": "127.0.0.1",
+          "server_port": 20219
+        }
+      },
       "sniff": true,
-      "sniff_override_destination": true
+      "sniff_override_destination": true,
+      "domain_strategy": "ipv4_only",
+      "endpoint_independent_nat": true
+    },
+    {
+      "type": "socks",
+      "tag": "socks-in",
+      "listen": "127.0.0.1",
+      "listen_port": 20220,
+      "udp_fragment": false
+    },
+    {
+      "type": "http",
+      "tag": "http-in",
+      "listen": "127.0.0.1",
+      "listen_port": 20221,
+      "udp_fragment": false
     }
   ],
   "outbounds": [
@@ -44,6 +91,14 @@
         "type": "ws",
         "path": "/"
       }
+    },
+    {
+      "type": "urltest",
+      "tag": "auto",
+      "url": "http://cp.cloudflare.com",
+      "interval": "10m0s",
+      "tolerance": 1,
+      "idle_timeout": "30m0s"
     }
   ],
   "route": {
@@ -51,7 +106,19 @@
       {
         "inbound": "tun-in",
         "action": "sniff"
+      },
+      {
+        "outbound": "DAY2-AD",
+        "action": "direct"
       }
     ]
+  },
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "path": "cache.db",
+      "cache_id": "sinavm",
+      "store_fakeip": true
+    }
   }
 }

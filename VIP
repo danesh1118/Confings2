@@ -14,17 +14,46 @@
   "dns": {
     "servers": [
       {
-        "tag": "Cloudflare",
-        "address": "https://1.1.1.1/dns-query",
-        "address_resolver": "cloudflare",
-        "strategy": "prefer_ipv4"
+        "tag": "Local-DNS",
+        "address": "https://1.1.1.1:443/dns-query",
+        "address_resolver": "Local-DNS-Resolver",
+        "strategy": "prefer_ipv4",
+        "detour": "proxy"
+      },
+      {
+        "tag": "Local-DNS-Resolver",
+        "address": "local",
+        "strategy": "prefer_ipv4",
+        "detour": "direct"
+      },
+      {
+        "tag": "Remote-DNS",
+        "address": "tcp://8.8.8.8",
+        "address_resolver": "Local-DNS-Resolver"
+      },
+      {
+        "tag": "dns_block",
+        "address": "rcode://success"
       }
-    ]
+    ],
+    "rules": [
+      {
+        "outbound": "any",
+        "server": "Local-DNS-Resolver"
+      }
+    ],
+    "final": "Remote-DNS",
+    "independent_cache": true
+  },
+  "ntp": {
+    "enabled": true,
+    "server": "ir.pool.ntp.org",
+    "server_port": 123,
+    "detour": "direct"
   },
   "inbounds": [
     {
       "type": "tun",
-      "tag": "tun-in",
       "address": [
         "172.19.0.1/30",
         "fdfe:dcba:9876::1/126"
@@ -37,45 +66,207 @@
       "endpoint_independent_nat": true
     },
     {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "127.0.0.1",
+      "listen_port": 20219
+    },
+    {
       "type": "socks",
       "tag": "socks-in",
       "listen": "127.0.0.1",
-      "listen_port": 20220,
-      "udp_fragment": false
+      "listen_port": 20220
+    },
+    {
+      "type": "http",
+      "tag": "http-in",
+      "listen": "127.0.0.1",
+      "listen_port": 20221
     }
   ],
   "outbounds": [
     {
+      "type": "selector",
+      "tag": "select",
+      "outbounds": [
+        "auto",
+        "🇹🇷 VIP Tradingview",
+        "🇷🇺 VIP VK",
+        "🇫🇷 VIP gRPC",
+        "🇩🇪 VIP gRPC IPv6",
+        "🇫🇮 VIP TCP",
+        "🇭🇺 VIP Tradingview"
+      ],
+      "default": "auto",
+      "interrupt_exist_connections": true
+    },
+    {
+      "type": "urltest",
+      "tag": "auto",
+      "outbounds": [
+        "🇹🇷 VIP Tradingview",
+        "🇷🇺 VIP VK",
+        "🇫🇷 VIP gRPC",
+        "🇩🇪 VIP gRPC IPv6",
+        "🇫🇮 VIP TCP",
+        "🇭🇺 VIP Tradingview"
+      ],
+      "url": "http://cp.cloudflare.com",
+      "interval": "10m",
+      "tolerance": 50,
+      "idle_timeout": "30m",
+      "interrupt_exist_connections": true
+    },
+    {
       "type": "vless",
-      "tag": "DAY2-AD",
-      "server": "208.103.161.33",
-      "server_port": 2053,
-      "uuid": "1a25f8ad-cad2-4e93-b5bf-34e42bcac02a",
+      "tag": "🇹🇷 VIP Tradingview",
+      "server": "83.166.237.115",
+      "server_port": 8443,
+      "uuid": "0add8d40-58e5-4bdc-8099-10d242f44dd4",
+      "flow": "xtls-rprx-vision",
+      "packet_encoding": "xudp",
       "tls": {
         "enabled": true,
-        "server_name": "sni.111000.dynv6.net",
-        "insecure": false,
+        "server_name": "tradingview.com",
+        "reality": {
+          "enabled": true,
+          "public_key": "zii4nGNapnFKL6SN8GzWNqFlElBvUCUFUThEP0kFH04",
+          "short_id": "e57932a42872a362"
+        },
         "utls": {
           "enabled": true,
           "fingerprint": "chrome"
         }
-      },
-      "transport": {
-        "type": "ws",
-        "path": "/"
       }
+    },
+    {
+      "type": "vless",
+      "tag": "🇷🇺 VIP VK",
+      "server": "auth.cometatech.ru",
+      "server_port": 8443,
+      "uuid": "77550287-7875-4b45-b03e-6968074a1f68",
+      "flow": "xtls-rprx-vision",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "server_name": "www.vk.com",
+        "reality": {
+          "enabled": true,
+          "public_key": "fcPttS39Xqn_zD3p0tAhCf1kdiT5Si8B5kmYZE2xfhM",
+          "short_id": "f99d367c4de3"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "🇫🇷 VIP gRPC",
+      "server": "51.68.26.124",
+      "server_port": 51926,
+      "uuid": "79fb7024-1fa6-4ade-89af-eca20826bbb4",
+      "packet_encoding": "xudp",
+      "transport": {
+        "type": "grpc",
+        "service_name": "ZEDMODEON-ZEDMODEON-bia-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "🇩🇪 VIP gRPC IPv6",
+      "server": "[2001:41d0:701:1000::72a]",
+      "server_port": 13357,
+      "uuid": "5075cf39-3dd8-4cc9-8cf3-adafae13293a",
+      "packet_encoding": "xudp",
+      "transport": {
+        "type": "grpc",
+        "service_name": "ZEDMODEON-ZEDMODEON-bia-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "🇫🇮 VIP TCP",
+      "server": "s1.tun.fin.cloudnsas.ir",
+      "server_port": 443,
+      "uuid": "da616dac-b2a0-4cd5-b647-579f10bb5501",
+      "packet_encoding": "xudp"
+    },
+    {
+      "type": "vless",
+      "tag": "🇭🇺 VIP Tradingview",
+      "server": "79.127.133.77",
+      "server_port": 8443,
+      "uuid": "291a2db3-04b5-4089-af90-adb5d1ce05ff",
+      "flow": "xtls-rprx-vision",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "server_name": "tradingview.com",
+        "reality": {
+          "enabled": true,
+          "public_key": "7zd9mJilgjOrg_ohtw23Vmio-pdnYqeP_r-kiWt87Cg",
+          "short_id": "f4b4a6365558ea2e"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      }
+    },
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "block",
+      "tag": "block"
     }
   ],
   "route": {
     "rules": [
       {
-        "inbound": "tun-in",
-        "action": "sniff"
+        "ip_is_private": true,
+        "outbound": "direct"
       },
       {
-        "outbound": "DAY2-AD",
-        "action": "direct"
+        "domain_regex": [
+          ".*\\.ir$",
+          ".*\\.xn--mgba3a4f16a$"
+        ],
+        "outbound": "direct"
+      },
+      {
+        "protocol": "stun",
+        "action": "reject"
+      },
+      {
+        "network": "tcp",
+        "port": 853,
+        "action": "reject"
+      },
+      {
+        "network": "udp",
+        "port": 443,
+        "action": "reject"
       }
-    ]
+    ],
+    "auto_detect_interface": true,
+    "override_android_vpn": true
+  },
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "path": "cache.db",
+      "cache_id": "vip-group",
+      "store_fakeip": true
+    },
+    "clash_api": {
+      "external_controller": "127.0.0.1:9090",
+      "default_mode": "🚀 VIP Group",
+      "access_control_allow_origin": "https://yacd.metacubex.one",
+      "access_control_allow_private_network": true
+    }
   }
 }

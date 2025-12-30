@@ -1,0 +1,350 @@
+#اسکی نرو عزیز
+                 #ببینم جایی گزاشتی 
+                 #پاره میشی 
+                 #میگم کاربر ها ریپورتت بزنن 
+                
+# Copyright (c) 2025 Leviko_pubg
+# All rights reserved.  
+# This configuration file is for personal use only. Redistribution, modification, or commercial use is prohibited without explicit permission  
+
+#subscription-userinfo: upload=0; download=0; total=0; expire=1768595399
+#profile-update-interval: 6  
+#support-url: https://t.me/napsternet2
+#profile-web-page-url: https://t.me/napsternet2
+{
+  "log": {
+    "level": "panic"
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "Local-DNS",
+        "address": "https://1.1.1.1:443/dns-query",
+        "strategy": "prefer_ipv4",
+        "detour": "proxy"
+      },
+      {
+        "tag": "local",
+        "address": "local",
+        "detour": "direct"
+      }
+    ],
+    "final": "Local-DNS"
+  },
+  "ntp": {
+    "enabled": true,
+    "server": "ir.pool.ntp.org",
+    "server_port": 123,
+    "detour": "direct"
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "address": [
+        "172.19.0.1/30",
+        "fdfe:dcba:9876::1/126"
+      ],
+      "auto_route": true,
+      "stack": "mixed",
+      "sniff": true,
+      "sniff_override_destination": true,
+      "domain_strategy": "ipv4_only",
+      "endpoint_independent_nat": true
+    },
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "127.0.0.1",
+      "listen_port": 20219
+    },
+    {
+      "type": "socks",
+      "tag": "socks-in",
+      "listen": "127.0.0.1",
+      "listen_port": 20220
+    },
+    {
+      "type": "http",
+      "tag": "http-in",
+      "listen": "127.0.0.1",
+      "listen_port": 20221
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "selector",
+      "tag": "select",
+      "outbounds": [
+        "auto",
+        "🇦🇩 VIP WS+TLS",
+        "🇷🇺 VIP Reality Vision VK",
+        "🇬🇧 VIP WS+TLS",
+        "🇮🇩 VIP WS+TLS",
+        "🇩🇪 VIP gRPC IPv6",
+        "🇩🇪 VIP gRPC Reality",
+        "🇷🇺 VIP Reality Vision X5",
+        "🇪🇪 VIP Reality Vision",
+        "🇳🇱 VIP gRPC Reality",
+        "🇱🇻 VIP Reality Vision"
+      ],
+      "default": "auto"
+    },
+    {
+      "type": "urltest",
+      "tag": "auto",
+      "outbounds": [
+        "🇦🇩 VIP WS+TLS",
+        "🇷🇺 VIP Reality Vision VK",
+        "🇬🇧 VIP WS+TLS",
+        "🇮🇩 VIP WS+TLS",
+        "🇩🇪 VIP gRPC IPv6",
+        "🇩🇪 VIP gRPC Reality",
+        "🇷🇺 VIP Reality Vision X5",
+        "🇪🇪 VIP Reality Vision",
+        "🇳🇱 VIP gRPC Reality",
+        "🇱🇻 VIP Reality Vision"
+      ],
+      "url": "http://cp.cloudflare.com",
+      "interval": "10m",
+      "tolerance": 50
+    },
+    {
+      "type": "vless",
+      "tag": "🇦🇩 VIP WS+TLS",
+      "server": "208.103.161.33",
+      "server_port": 2053,
+      "uuid": "1a25f8ad-cad2-4e93-b5bf-34e42bcac02a",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "server_name": "sni.111000.dynv6.net",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "🇷🇺 VIP Reality Vision VK",
+      "server": "89.169.182.230",
+      "server_port": 443,
+      "uuid": "ac2c8871-d4eb-40a6-8487-fd1b31c3bc22",
+      "flow": "xtls-rprx-vision",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "server_name": "vk.com",
+        "reality": {
+          "enabled": true,
+          "public_key": "dFORJuMEa7izUStNjvhLFvJ2Hudr4v07VQhQS-Wbyh8",
+          "short_id": "fd"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "🇬🇧 VIP WS+TLS",
+      "server": "108.162.193.217",
+      "server_port": 443,
+      "uuid": "ee122f13-9b54-49b6-abc5-aa47b464fdb3",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "server_name": "azizoarjmand.info",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/yhowcws",
+        "headers": {
+          "Host": "azizoarjmand.info"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "🇮🇩 VIP WS+TLS",
+      "server": "tronblue.qzz.io",
+      "server_port": 443,
+      "uuid": "9be5679d-cd82-4ace-9fcf-bed31e21fadf",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "server_name": "tronblue.qzz.io",
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "ws",
+        "path": "/43.218.77.16=1443",
+        "headers": {
+          "Host": "tronblue.qzz.io"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "🇩🇪 VIP gRPC IPv6",
+      "server": "[2001:41d0:701:1000::72a]",
+      "server_port": 13357,
+      "uuid": "5075cf39-3dd8-4cc9-8cf3-adafae13293a",
+      "packet_encoding": "xudp",
+      "transport": {
+        "type": "grpc",
+        "service_name": "ZEDMODEON-ZEDMODEON-bia-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON-ZEDMODEON"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "🇩🇪 VIP gRPC Reality",
+      "server": "46.224.56.108",
+      "server_port": 2052,
+      "uuid": "2f60be6f-be0c-48b4-9772-b56f42b51ba1",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "server_name": "web.eitaa.com",
+        "reality": {
+          "enabled": true,
+          "public_key": "TpEz8VPxZxx1E-fckWTvTB9U4v7ZFzW65WAs2OmkbDA",
+          "short_id": "c2"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "grpc"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "🇷🇺 VIP Reality Vision X5",
+      "server": "51.250.26.96",
+      "server_port": 4248,
+      "uuid": "5ba2e48a-d36c-40a5-a4a1-2819ed6efce5",
+      "flow": "xtls-rprx-vision",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "server_name": "ads.x5.ru",
+        "reality": {
+          "enabled": true,
+          "public_key": "SbVKOEMjK0sIlbwg4akyBg5mL5KZwwB-ed4eEE7YnRc",
+          "short_id": ""
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "🇪🇪 VIP Reality Vision",
+      "server": "144.31.178.168",
+      "server_port": 443,
+      "uuid": "eb162ab1-a006-4931-b1b3-8fc88a22b10e",
+      "flow": "xtls-rprx-vision",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "server_name": "tbankru.outlinekeys.net",
+        "reality": {
+          "enabled": true,
+          "public_key": "WvNaAxI0W__qfUKbtysH4IwF155YENlv3PG6crCmPkA",
+          "short_id": ""
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "🇳🇱 VIP gRPC Reality",
+      "server": "206.245.157.142",
+      "server_port": 37050,
+      "uuid": "fbcc8fc6-553c-497c-ba3b-855bcf6cf96c",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "server_name": "google.com",
+        "reality": {
+          "enabled": true,
+          "public_key": "3_i89UAZojlosMAy71tEepTTbX5MvpfY1Xs7UPPNGGA",
+          "short_id": "58b5bed80f"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      },
+      "transport": {
+        "type": "grpc"
+      }
+    },
+    {
+      "type": "vless",
+      "tag": "🇱🇻 VIP Reality Vision",
+      "server": "185.77.231.80",
+      "server_port": 20814,
+      "uuid": "52b32247-4747-41de-b816-ba750a5e8bd1",
+      "flow": "xtls-rprx-vision",
+      "packet_encoding": "xudp",
+      "tls": {
+        "enabled": true,
+        "server_name": "download.max.ru",
+        "reality": {
+          "enabled": true,
+          "public_key": "J1HIxQSniHBlaSUXTLTWyUUpiaeyE8MWmA2evyFZbFQ",
+          "short_id": "00e7"
+        },
+        "utls": {
+          "enabled": true,
+          "fingerprint": "chrome"
+        }
+      }
+    },
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "block",
+      "tag": "block"
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "ip_is_private": true,
+        "outbound": "direct"
+      },
+      {
+        "domain_regex": [
+          ".*\\.ir$",
+          ".*\\.xn--mgba3a4f16a$"
+        ],
+        "outbound": "direct"
+      }
+    ],
+    "auto_detect_interface": true
+  }
+}
